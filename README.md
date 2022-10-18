@@ -1,2 +1,1 @@
-# linux-tools
-Some tools for linux distributions
+# Tools for Linux distributions
