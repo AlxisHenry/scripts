@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# source: https://www.youtube.com/watch?v=O-UMHX9bdQU&ab_channel=ChristopheCasalegno%28Brain0verride%29
+
 # Get current ram usage by service(s)
 # Call the script with service(s) in parameters
 # bash ram_usage.sh [services...]
