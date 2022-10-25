@@ -4,7 +4,6 @@
 
 # Get current ram usage by service(s)
 # Call the script with service(s) in parameters
-# bash ServiceRamUsage.sh [services...]
 
 PROCESS="${@}"
 
