@@ -14,7 +14,7 @@
 
 **To contribute, follow the next steps :**
 
-- **Create new branch** : *For linux create a branch named `linux/{features}`*
+- **Create new branch** : *For linux create a branch named* `linux/{features}`
 
 - **Merge request**
 
