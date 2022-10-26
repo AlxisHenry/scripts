@@ -2,6 +2,8 @@
 
 ## Available themes
 
+- **Utilities** : *Scripts for common usages*.
+
 - **Services** : *Scripts related to services*.
 
 - **Interfaces** : *Scripts used to create interfaces*.
