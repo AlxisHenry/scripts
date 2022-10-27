@@ -23,13 +23,21 @@ then
 fi
 
 function __whois() {
-	echo $1;
+	request=$(whois $1 |grep "NOT FOUND");
+	if [[ ! -z $request ]];
+	then
+		echo "The domain ${1} is available !";
+	else
+		echo "The domain ${1} is already taken...";
+	fi
 }
 
 for domain in ${DOMAINS};
 do
+	echo "Who is ${domain} :";
 	for tld in "${TLDS[@]}"
 	do
 	        __whois "${domain}.${tld}";
 	done
+	echo "";
 done
