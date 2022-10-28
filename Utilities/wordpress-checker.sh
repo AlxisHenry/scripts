@@ -3,7 +3,7 @@
 # bash SCRIPTNAME [OPTION]... [ARGUMENTS]...
 
 OPTION="${1}";
-PARAMETERS="${@}";
+PARAMETERS="$(echo ${@} |cut -c 5-)";
 
 # -----------
 #  CONSTANTS
@@ -44,6 +44,12 @@ function onlyOptionalParameters() {
 function sortParameters() {
 	echo -e "No option given, we are sorting your parameters. Please wait...";
 	sleep 1;
+}
+
+function request() {
+	data=$(curl -s $url |grep "wp-content");
+
+
 }
 
 # ---------
