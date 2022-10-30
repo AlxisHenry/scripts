@@ -3,40 +3,46 @@
 # bash SCRIPTNAME [OPTION]... [ARGUMENTS]...
 
 OPTION="${1}";
-PARAMETERS="$(echo ${@} |cut -c 5-)";
+
+if [ ${OPTION} == "--url" ];
+then
+	PARAMETERS="$(echo ${@} |cut -c 7-)";
+else
+	PARAMETERS="$(echo ${@} |cut -c 4-)";
+fi
 
 # -----------
 #  CONSTANTS
 # -----------
 
 OPTION_URL=0;
-OPTION_DOMAIN=0;
+# OPTION_DOMAIN=0;
 
 # -----------
 #  VARIABLES
 # -----------
 
 urls=""
-domains=""
+# domains=""
 
 # -----------
 #  FUNCTIONS
 # -----------
 
+function throw() {
+	echo $1;
+}
+
 function onlyOptionalParameters() {
-	throwError() { echo "You pass an argument [ ${param} ] incompatible with the selected option [ ${1} ]."; }
 	regex='';
-	echo ${1};
 	if [ ${1} == "--url" ];
 	then
 		regex='^(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]\.[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]$';
 	fi
-	echo ${regex};
 	for param in ${PARAMETERS}; do
-		echo $param;
-		if [ $param =~ $regex ];
+		if [[ ! ${param} =~ ${regex} ]];
     then
-    	throwError
+    	throw "You passed an argument [ ${param} ] who's not corresponding to the selected option ${1}.";
     fi
   done
 }
@@ -47,9 +53,15 @@ function sortParameters() {
 }
 
 function request() {
-	data=$(curl -s $url |grep "wp-content");
-
-
+	for param in ${PARAMETERS}; do
+		response=$(curl -s ${param} |grep "wp-content");
+		if [[ -z ${response} ]];
+		then
+			throw "Sorry, but nothing was found on this parameter: [ $param ].";
+		else
+			throw "We found some traces of Wordpress on the following url: [ $param ].";
+		fi
+	done
 }
 
 # ---------
@@ -62,17 +74,20 @@ then
 	exit;
 fi
 
-case $OPTION in
+case ${OPTION} in
 	-u | --url)
 		onlyOptionalParameters --url;
 		OPTION_URL=1;
+		request --url ${PARAMETERS};
     ;;
 	-d | --domain)
-		onlyOptionalParameters --domain;
-    OPTION_DOMAIN=1;
+		#onlyOptionalParameters --domain;
+    #OPTION_DOMAIN=1;
+		exit;
     ;;
   *)
-    sortParameters;
+    #sortParameters;
+		throw "Argument passed [ ${OPTION} ] is not valid.";
     exit;
     ;;
 esac
